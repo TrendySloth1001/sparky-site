@@ -1,0 +1,421 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>sparky: your everyday AI, a tap away</title>
+<meta name="description" content="sparky is an AI assistant for Android. Hold the power button, ask anything, circle what you see, and get answers with sources. Private by design, no ads.">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#f4f4f2" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
+<!-- TODO: set the real domain, then uncomment and fix the absolute URLs below (OG/Twitter images must be absolute). -->
+<!-- <link rel="canonical" href="https://TODO-DOMAIN/"> -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="sparky">
+<meta property="og:title" content="sparky: your everyday AI, a tap away">
+<meta property="og:description" content="An AI assistant for Android. Hold the power button, ask anything, and get answers with sources. Private by design, no ads.">
+<!-- TODO: og:image and og:url need absolute URLs, e.g. https://TODO-DOMAIN/assets/og.png -->
+<meta property="og:image" content="assets/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="The sparky wordmark and the assistant answering a question on an Android phone.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="sparky: your everyday AI, a tap away">
+<meta name="twitter:description" content="An AI assistant for Android. Hold the power button, ask anything, and get answers with sources.">
+<meta name="twitter:image" content="assets/og.png">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="assets/img/icon-192.png" sizes="192x192" type="image/png">
+<link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+<script>
+/* Apply the remembered theme before first paint (no flash). */
+try { var t = localStorage.getItem("sparky-theme"); if (t === "light" || t === "dark") document.documentElement.setAttribute("data-theme", t); } catch (e) {}
+</script>
+<link rel="preload" href="assets/fonts/SpaceGrotesk.woff" as="font" type="font/woff" crossorigin>
+<link rel="stylesheet" href="css/style.css">
+<script src="js/dotmatrix.js" defer></script>
+<script src="js/main.js" defer></script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <symbol id="i-search" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.6-3.6"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m8 12.4 2.8 2.8L16.2 9.6"/></symbol>
+    <symbol id="i-help" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.6 2.6 0 0 1 5 .8c0 1.7-2.5 2.2-2.5 3.7M12 17h.01"/></symbol>
+    <symbol id="i-folder" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7a2 2 0 0 1 2-2h4l2 2.5h8a2 2 0 0 1 2 2V17a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></symbol>
+    <symbol id="i-book" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v16H6.5A2.5 2.5 0 0 0 4 21.5z"/><path d="M4 5.5v16M9 8h7"/></symbol>
+    <symbol id="i-link" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/></symbol>
+    <symbol id="i-pin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s7-6.2 7-11.5A7 7 0 0 0 5 9.5C5 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+    <symbol id="i-cal" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="15" rx="3"/><path d="M8 3v4M16 3v4M3.5 10h17"/></symbol>
+    <symbol id="i-music" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V6l11-2v12"/><circle cx="6.5" cy="18" r="2.5"/><circle cx="17.5" cy="16" r="2.5"/></symbol>
+    <symbol id="i-pay" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="18" height="13" rx="3"/><path d="M3 10.5h18M7 15h3"/></symbol>
+    <symbol id="i-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4.5" y="10.5" width="15" height="10" rx="3"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5"/></symbol>
+    <symbol id="i-ban" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m5.6 5.6 12.8 12.8"/></symbol>
+    <symbol id="i-trash" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M9 7V4.5h6V7M6.5 7l1 13h9l1-13M10 11v5M14 11v5"/></symbol>
+    <symbol id="i-down" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11m0 0 4.5-4.5M12 15l-4.5-4.5M5 20h14"/></symbol>
+    <symbol id="i-power" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v8M6.8 6.6a8 8 0 1 0 10.4 0"/></symbol>
+    <symbol id="i-circle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3 2.6"><ellipse cx="12" cy="12" rx="9" ry="7"/></symbol>
+    <symbol id="i-bolt" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M13 3 5 13.5h6L10 21l8-10.5h-6z"/></symbol>
+    <symbol id="i-key" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="15" r="4"/><path d="m11 12 9-9M16 7l3 3"/></symbol>
+  </defs>
+</svg>
+
+<header class="site-header" id="top">
+  <div class="wrap bar">
+    <a class="wordmark" href="#top" aria-label="sparky, back to top">sparky<span class="dot" aria-hidden="true"></span></a>
+    <nav class="nav" aria-label="Page">
+      <a href="#assistant">Assistant</a>
+      <a href="#trust">Answers</a>
+      <a href="#privacy">Privacy</a>
+      <a href="#whats-new">What's new</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+    <div class="bar-actions">
+      <button class="icon-btn" id="theme-toggle" type="button" aria-label="Switch between light and dark theme">
+        <svg class="moon" aria-hidden="true"><use href="#i-moon"/></svg>
+        <svg class="sun" aria-hidden="true"><use href="#i-sun"/></svg>
+      </button>
+      <a class="btn btn-primary btn-sm" href="https://sparky.cloudnsofts.com/download/android">Download</a>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+
+<!-- HERO -->
+<section class="hero" id="hero" aria-labelledby="hero-title">
+  <canvas id="dots" aria-hidden="true"></canvas>
+  <div class="wrap hero-grid">
+    <div class="hero-copy">
+      <p class="kicker">AI assistant for Android</p>
+      <p class="wordmark" aria-hidden="true">sparky<span class="dot"></span></p>
+      <h1 id="hero-title">Your everyday AI, a tap away.</h1>
+      <p class="lead">Hold the power button and sparky opens on top of whatever you are doing. Ask, circle something on screen, and get answers with sources you can check.</p>
+      <div class="cta-row">
+        <a class="btn btn-primary" href="https://sparky.cloudnsofts.com/download/android">
+          <svg aria-hidden="true"><use href="#i-down"/></svg>Download for Android
+        </a>
+        <a class="btn btn-ghost" href="#whats-new">See what's new</a>
+      </div>
+      <p class="fine">Android only. No ads, no trackers on this site.</p>
+    </div>
+    <div class="hero-phone">
+      <div class="phone">
+        <img class="t-light" src="assets/img/assist-light.webp" width="480" height="1065" alt="sparky open on top of a flight booking, answering that the flight leaves at 06:45 and the gate closes at 06:25.">
+        <img class="t-dark" src="assets/img/assist-dark.webp" width="480" height="1065" alt="sparky open on top of a flight booking, answering that the flight leaves at 06:45 and the gate closes at 06:25.">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ASSISTANT -->
+<section class="section dotted" id="assistant" aria-labelledby="assistant-title">
+  <div class="wrap feature">
+    <div class="copy">
+      <p class="kicker">On your power button</p>
+      <h2 id="assistant-title">Ask without leaving the app you're in.</h2>
+      <p class="lead" style="margin-top:20px">Make sparky your phone's assistant and it is one hold away, over any app. Reading a booking, a menu, a message? Ask about what is on screen.</p>
+      <ul class="points">
+        <li><span class="ico"><svg aria-hidden="true"><use href="#i-power"/></svg></span><div><b>Hold the power button</b><span>Or swipe up from a bottom corner. sparky opens on top of what you are doing.</span></div></li>
+        <li><span class="ico"><svg aria-hidden="true"><use href="#i-circle"/></svg></span><div><b>Circle to search</b><span>Draw around anything on screen and ask about just that. Answers stick to what you circled.</span></div></li>
+        <li><span class="ico"><svg aria-hidden="true"><use href="#i-link"/></svg></span><div><b>Carry it on in the app</b><span>One tap to open the same conversation in sparky, or copy the answer.</span></div></li>
+      </ul>
+    </div>
+    <div class="phones">
+      <figure class="phone" style="margin-block:0">
+        <img class="t-light" loading="lazy" src="assets/img/tour-light.webp" width="480" height="1065" alt="The sparky setup screen: hold the power button and sparky opens on top of whatever you are doing.">
+        <img class="t-dark" loading="lazy" src="assets/img/tour-dark.webp" width="480" height="1065" alt="The sparky setup screen: hold the power button and sparky opens on top of whatever you are doing.">
+      </figure>
+      <figure class="phone" style="margin-inline:0">
+        <img class="t-light" loading="lazy" src="assets/img/circle-light.webp" width="480" height="1065" alt="A shoe circled on screen, and sparky identifying it as a red retro running shoe with its price.">
+        <img class="t-dark" loading="lazy" src="assets/img/circle-dark.webp" width="480" height="1065" alt="A shoe circled on screen, and sparky identifying it as a red retro running shoe with its price.">
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- TRUST -->
+<section class="section" id="trust" aria-labelledby="trust-title" style="border-top:1px solid var(--border)">
+  <div class="wrap">
+    <div class="head">
+      <p class="kicker">Answers you can trust</p>
+      <h2 id="trust-title">It shows its sources, and admits when it doesn't know.</h2>
+    </div>
+    <div class="grid c3">
+      <article class="tile">
+        <span class="ico"><svg aria-hidden="true"><use href="#i-search"/></svg></span>
+        <h3>Web search with citations</h3>
+        <p>Answers are grounded in the web, with sentence-level citations. Tap a source to see where a claim came from.</p>
+      </article>
+      <article class="tile">
+        <span class="ico"><svg aria-hidden="true"><use href="#i-check"/></svg></span>
+        <h3>Checks before it claims</h3>
+        <p>Factual questions search the web first, so sparky doesn't answer from memory when it could look it up.</p>
+      </article>
+      <article class="tile">
+        <span class="ico"><svg aria-hidden="true"><use href="#i-help"/></svg></span>
+        <h3>An honest "I don't know"</h3>
+        <p>When sparky can't tell, it says so instead of guessing. The same goes for a blank capture or a video it can't read.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- BRING YOUR STUFF -->
+<section class="section dotted" id="your-stuff" aria-labelledby="stuff-title" style="border-top:1px solid var(--border)">
+  <div class="wrap feature reverse">
+    <div class="copy">
+      <p class="kicker">Bring your stuff</p>
+      <h2 id="stuff-title">Ask about the things you already have.</h2>
+      <p class="lead" style="margin-top:20px">Save notes and documents for sparky to search, attach files to a chat, or link the apps you use and ask about them in plain words.</p>
+      <ul class="points">
+        <li><span class="ico"><svg aria-hidden="true"><use href="#i-book"/></svg></span><div><b>Knowledge base</b><span>Keep notes and documents close. sparky searches them when you ask.</span></div></li>
+        <li><span class="ico"><svg aria-hidden="true"><use href="#i-folder"/></svg></span><div><b>Files, previewed</b><span>Images, PDFs, code, tables, notes and videos open right in sparky. Ask about any file in one tap.</span></div></li>
+        <li><span class="ico"><svg aria-hidden="true"><use href="#i-link"/></svg></span><div><b>Google Drive, Notion, GitHub</b><span>Connect only what you want. With Notion you choose which pages to share, and you can disconnect any time.</span></div></li>
+      </ul>
+    </div>
+    <div class="visual-card" style="gap:28px">
+      <img class="ill t-light" loading="lazy" src="assets/img/ill-read-light.svg" width="420" height="420" alt="Illustration of a person lying on their side, reading.">
+      <img class="ill t-dark" loading="lazy" src="assets/img/ill-read-dark.svg" width="420" height="420" alt="Illustration of a person lying on their side, reading.">
+      <div class="phone" style="--w:230px">
+        <img class="t-light" loading="lazy" src="assets/img/apps-light.webp" width="480" height="1065" alt="The Apps screen of sparky listing GitHub and Google Drive as connected and Notion as available.">
+        <img class="t-dark" loading="lazy" src="assets/img/apps-dark.webp" width="480" height="1065" alt="The Apps screen of sparky listing GitHub and Google Drive as connected and Notion as available.">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CARDS -->
+<section class="section" id="cards" aria-labelledby="cards-title" style="border-top:1px solid var(--border)">
+  <div class="wrap feature">
+    <div class="copy">
+      <p class="kicker">Cards that do things</p>
+      <h2 id="cards-title">Answers you can tap.</h2>
+      <p class="lead" style="margin-top:20px">Ask for songs and get a playlist. Ask the way to the airport and get directions. sparky turns the answer into something you can act on.</p>
+      <ul class="points">
+        <li><span class="ico"><svg aria-hidden="true"><use href="#i-music"/></svg></span><div><b>Playlists</b><span>Song suggestions arrive with covers and 30-second previews. Open one in your music app, or play them all.</span></div></li>
+        <li><span class="ico"><svg aria-hidden="true"><use href="#i-pin"/></svg></span><div><b>Directions and more</b><span>Directions, calendar events, alarms, timers, calls, rides, food and travel searches, ready in one tap.</span></div></li>
+        <li><span class="ico"><svg aria-hidden="true"><use href="#i-pay"/></svg></span><div><b>UPI, prefilled</b><span>Ask to pay someone and sparky opens your UPI app with the details filled in. You confirm and pay there.</span></div></li>
+      </ul>
+    </div>
+    <div class="card-stack">
+      <div class="shot">
+        <img class="t-light" loading="lazy" src="assets/img/playlist-light.webp" width="560" height="538" alt="A sparky playlist card titled Songs like Kesariya, with four songs, covers, preview buttons and a Play all button.">
+        <img class="t-dark" loading="lazy" src="assets/img/playlist-dark.webp" width="560" height="538" alt="A sparky playlist card titled Songs like Kesariya, with four songs, covers, preview buttons and a Play all button.">
+      </div>
+      <div class="phone" style="--w:240px">
+        <img class="t-light" loading="lazy" src="assets/img/card-light.webp" width="480" height="1065" alt="A calendar card in sparky for a dentist appointment tomorrow at 3, with Cancel and Confirm buttons.">
+        <img class="t-dark" loading="lazy" src="assets/img/card-dark.webp" width="480" height="1065" alt="A calendar card in sparky for a dentist appointment tomorrow at 3, with Cancel and Confirm buttons.">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MODELS -->
+<section class="section dotted" id="models" aria-labelledby="models-title" style="border-top:1px solid var(--border)">
+  <div class="wrap feature reverse">
+    <div class="copy">
+      <p class="kicker">Many models, one app</p>
+      <h2 id="models-title">The right AI for each question.</h2>
+      <p class="lead" style="margin-top:20px">sparky picks a model for you and shows which one wrote every answer. Prefer your own account? Bring your own keys.</p>
+      <ul class="points">
+        <li><span class="ico"><svg aria-hidden="true"><use href="#i-bolt"/></svg></span><div><b>Automatic routing</b><span>Questions are routed across free cloud models. No picker to fiddle with unless you want one.</span></div></li>
+        <li><span class="ico"><svg aria-hidden="true"><use href="#i-key"/></svg></span><div><b>Bring your own keys</b><span>Add a key from Groq, OpenRouter, NVIDIA or Ollama and your chats run on it. See your own usage, visible only to you.</span></div></li>
+      </ul>
+    </div>
+    <div class="visual-card">
+      <div class="route" role="img" aria-label="Your question goes to sparky's automatic router, which picks from Groq, Ollama Cloud, NVIDIA or OpenRouter, or your own key.">
+        <span class="src">Your question</span>
+        <span class="stem"></span>
+        <span class="hub"><i></i>Auto routing</span>
+        <span class="stem"></span>
+        <div class="row">
+          <span class="chip">Groq</span><span class="chip">Ollama Cloud</span><span class="chip">NVIDIA</span><span class="chip">OpenRouter</span>
+        </div>
+        <span class="chip hot">Or your own key</span>
+        <div class="phone" style="--w:210px; margin-top:20px">
+          <img class="t-light" loading="lazy" src="assets/img/chat-light.webp" width="480" height="1065" alt="The sparky home screen greeting the user with suggestions like Explain a concept and Plan my day.">
+          <img class="t-dark" loading="lazy" src="assets/img/chat-dark.webp" width="480" height="1065" alt="The sparky home screen greeting the user with suggestions like Explain a concept and Plan my day.">
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRIVACY -->
+<section class="section" id="privacy" aria-labelledby="privacy-title" style="border-top:1px solid var(--border)">
+  <div class="wrap">
+    <div class="head">
+      <p class="kicker">Private by design</p>
+      <h2 id="privacy-title">Your chats are yours.</h2>
+      <p class="lead" style="margin-top:20px">We don't sell your data, don't use it for advertising, and don't use your content to train AI models.</p>
+    </div>
+    <div class="grid c4">
+      <article class="tile">
+        <span class="ico"><svg aria-hidden="true"><use href="#i-lock"/></svg></span>
+        <h3>Encrypted for you</h3>
+        <p>Your chats, memories, notes and files are encrypted at rest on our servers with a key of their own for each user.</p>
+      </article>
+      <article class="tile">
+        <span class="ico"><svg aria-hidden="true"><use href="#i-ban"/></svg></span>
+        <h3>No ads</h3>
+        <p>No advertising and no trackers. Crash reports are optional, never include your chats, and you can turn them off.</p>
+      </article>
+      <article class="tile">
+        <span class="ico"><svg aria-hidden="true"><use href="#i-pin"/></svg></span>
+        <h3>Roughly local, no permission</h3>
+        <p>Weather and nearby answers fit your city without the Android location permission. Switch it off, or set your own city.</p>
+      </article>
+      <article class="tile">
+        <span class="ico"><svg aria-hidden="true"><use href="#i-trash"/></svg></span>
+        <h3>You control it</h3>
+        <p>See, edit or switch off what sparky remembers. Delete a chat, a file, or your whole account in the app.</p>
+      </article>
+    </div>
+    <p class="fine" style="margin-top:28px">To write answers, your messages are sent to third-party model providers. <a href="https://sparky.cloudnsofts.com/privacy">Read the full privacy policy</a>.</p>
+  </div>
+</section>
+
+<!-- UPDATES -->
+<section class="section dotted" id="updates" aria-labelledby="updates-title" style="border-top:1px solid var(--border)">
+  <div class="wrap updates">
+    <div class="copy">
+      <p class="kicker">Updates built in</p>
+      <h2 id="updates-title">No hunting for new versions.</h2>
+      <p class="lead" style="margin-top:20px">New versions download inside sparky and install in a tap. A dropped connection no longer restarts the download from zero, and there is a Wi-Fi only option to save your data. sparky asks once per version, at a quiet moment.</p>
+    </div>
+    <div style="display:flex;justify-content:center">
+      <div class="phone" style="--w:250px">
+        <img class="t-light" loading="lazy" src="assets/img/news-light.webp" width="480" height="1065" alt="The What's new screen of sparky, showing version 1.13.1, Knows where you are, roughly.">
+        <img class="t-dark" loading="lazy" src="assets/img/news-dark.webp" width="480" height="1065" alt="The What's new screen of sparky, showing version 1.13.1, Knows where you are, roughly.">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHAT'S NEW -->
+<section class="section" id="whats-new" aria-labelledby="new-title" style="border-top:1px solid var(--border)">
+  <div class="wrap">
+    <div class="head">
+      <p class="kicker">What's new</p>
+      <h2 id="new-title">The latest from sparky.</h2>
+    </div>
+    <div class="releases">
+      <article class="release latest" aria-labelledby="r1">
+        <div class="meta"><span class="tag">Latest</span><span>15 Oct 2026</span></div>
+        <div class="ver">1.13.1</div>
+        <h3 id="r1">Knows where you are, roughly</h3>
+        <ul><li><b><em>NEW</em>Local answers</b><span>Weather, prices, places and news fit your city or state, with no location permission. Set your city in Privacy.</span></li></ul>
+      </article>
+      <article class="release" aria-labelledby="r2">
+        <div class="meta"><span>Earlier</span><span>15 Oct 2026</span></div>
+        <div class="ver">1.13.0</div>
+        <h3 id="r2">Tap to do it</h3>
+        <ul>
+          <li><b><em>NEW</em>Playlists</b><span>Covers, 30-second previews, open in your music app, or play them all.</span></li>
+          <li><b><em>NEW</em>Action cards</b><span>Directions, calendar events, alarms, timers, calls, rides, food and travel searches.</span></li>
+          <li><b><em>NEW</em>UPI, prefilled</b><span>sparky opens your UPI app with the details filled in. You confirm and pay there.</span></li>
+        </ul>
+      </article>
+      <article class="release" aria-labelledby="r3">
+        <div class="meta"><span>Earlier</span><span>15 Oct 2026</span></div>
+        <div class="ver">1.12.3</div>
+        <h3 id="r3">A little tick</h3>
+        <ul><li><b><em>NEW</em>Sound on open</b><span>A soft tick when the assistant opens. Quiet on silent and Do Not Disturb; turn it off in Assistant settings.</span></li></ul>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="section dotted" id="faq" aria-labelledby="faq-title" style="border-top:1px solid var(--border)">
+  <div class="wrap">
+    <div class="head center">
+      <p class="kicker">Questions</p>
+      <h2 id="faq-title">Good to know.</h2>
+    </div>
+    <div class="faq">
+      <details>
+        <summary>Is it free?</summary>
+        <div class="a"><p>Yes. sparky routes your questions across free cloud models, and you can add your own provider keys if you want to run chats on your own account.</p></div>
+      </details>
+      <details>
+        <summary>Which phones does it run on?</summary>
+        <div class="a"><p>Android phones. sparky is an Android app, and there is no iPhone version. The power-button assistant and circle to search use Android's assistant setting, which sparky walks you through on first launch.</p></div>
+      </details>
+      <details>
+        <summary>How do I install and update it?</summary>
+        <div class="a"><p>Tap Download for Android on this page. Your phone may ask you to allow installs from your browser the first time. After that, new versions download inside sparky and install in a tap.</p></div>
+      </details>
+      <details>
+        <summary>Where is my data?</summary>
+        <div class="a"><p>Chats and files live in your sparky account on our server, in private storage, encrypted at rest with a key of its own for each user. Only your account can see them. To write answers, your messages are sent to third-party model providers. You can delete any chat or file, or your whole account, in the app.</p><p><a href="https://sparky.cloudnsofts.com/privacy">Privacy policy</a></p></div>
+      </details>
+      <details>
+        <summary>Does it need my location?</summary>
+        <div class="a"><p>No. For weather and local answers sparky works out a rough location (city, state, country) only when you ask something local, without the Android location permission or GPS. You can switch it off in Settings, Privacy, or set your own city.</p></div>
+      </details>
+      <details>
+        <summary>Can I use my own API keys?</summary>
+        <div class="a"><p>Yes. Add a key from Groq, OpenRouter, NVIDIA or Ollama and your chats run on it. You can test a key in one tap and see requests, tokens and models used. Only you can see that usage.</p></div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="section cta" aria-labelledby="cta-title" style="padding-top:0">
+  <div class="wrap">
+    <div class="cta-card">
+      <h2 id="cta-title">Get sparky on your phone.</h2>
+      <p>One hold of the power button to your next answer.</p>
+      <div class="cta-row">
+        <a class="btn btn-primary" href="https://sparky.cloudnsofts.com/download/android"><svg aria-hidden="true"><use href="#i-down"/></svg>Download for Android</a>
+        <a class="btn btn-ghost" href="#whats-new">See what's new</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="foot">
+      <div>
+        <p class="wordmark" style="margin-bottom:12px">sparky<span class="dot" aria-hidden="true"></span></p>
+        <p>Your everyday AI, a tap away. For Android.</p>
+      </div>
+      <nav aria-label="Legal">
+        <h3>Legal</h3>
+        <ul>
+          <li><a href="https://sparky.cloudnsofts.com/privacy">Privacy policy</a></li>
+          <li><a href="https://sparky.cloudnsofts.com/terms">Terms of service</a></li>
+        </ul>
+      </nav>
+      <div>
+        <h3>Contact</h3>
+        <ul>
+          <li><a href="mailto:nkumawat8956@gmail.com">nkumawat8956@gmail.com</a></li>
+          <li><a href="https://sparky.cloudnsofts.com/download/android">Download for Android</a></li>
+        </ul>
+      </div>
+      <div class="credits">
+        <h3>Credits</h3>
+        <p style="color:inherit;font-size:inherit">Type: Space Grotesk (Florian Karsten) and Space Mono (Colophon Foundry), SIL Open Font License. Illustrations: Open Peeps and Open Doodles by Pablo Stanley (CC0), with props drawn for sparky. Logos and names of other products are trademarks of their owners and only identify them.</p>
+      </div>
+    </div>
+    <div class="legal"><span>&copy; <span id="year">2026</span> sparky</span><span>No cookies. No analytics.</span></div>
+  </div>
+</footer>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <symbol id="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6 7 7M17 17l1.4 1.4M5.6 18.4 7 17M17 7l1.4-1.4"/></symbol>
+    <symbol id="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></symbol>
+  </defs>
+</svg>
+</body>
+</html>
